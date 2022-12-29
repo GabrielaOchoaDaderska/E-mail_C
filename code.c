@@ -1,77 +1,59 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
 
-int main()
+int main(void)
 {
+    char email[50];
+    int i, j, count = 0;
 
-    unsigned char email[50];
-    int i, licznik_malych_znakow =0,licznik_malp = 0, licznik_duzych_znakow =0, licznik_liczb =0;
-    printf("Prosze podac email: ");
-    jump:
+
+    do {
+        printf("Wprowadz poprawny adres e-mail: ");
         scanf("%s", email);
-    for (i = 0; email[i] != 0; i++)
+
+
+        for(i=0; i<strlen(email); i++)
+        {
+            if(email[i] == '@')
+            {
+                count++;
+            }
+            else if((email[i] < '0' || email[i] > '9') && (email[i] < 'A' || email[i] > 'Z') && (email[i] < 'a' || email[i] > 'z'))
+            {
+                count = 0;
+                break;
+            }
+        }
+    } while(count != 1);
+
+    printf("\nPoprawny adres e-mail: ");
+    for(j=0; j<strlen(email); j++)
     {
-
-        if (email[i] >= 'a' && email[i] <= 'z')
-        {
-            licznik_malych_znakow ++;
-            continue;
-        }
-
-         if (email[i] >= 'A' && email[i] <= 'Z')
-        {
-            licznik_duzych_znakow ++;
-            continue;
-        }
-
-         if (email[i] >= '0' && email[i] <= '9')
-        {
-            licznik_liczb ++;
-            continue;
-        }
-         if (email[i] == '@')
-        {
-            licznik_malp ++;
-        }
+        printf("%c", toupper(email[j]));
     }
 
-    if(licznik_duzych_znakow > 0 && licznik_liczb > 0 && licznik_malp == 1 && licznik_malych_znakow > 0)
-    {
-         printf("Email poprawny\n");
-    }
+    int size;
+    printf("\n\nPodaj rozmiar: ");
+    scanf("%d", &size);
+    char *ptr = (char*) malloc(size * sizeof(char));
 
+   
+    printf("\nWprowadz wiadomosc: ");
+    scanf("%s", ptr);
+
+  
+    if(strlen(ptr) >= size)
+    {
+        printf("\nWiadomosc jest zbyt dluga!\n");
+        free(ptr);
+    }
     else
     {
-        printf("Email jest niepoprawny \n");
-        goto jump;
-    }
-
-   for (i = 0; email[i] != 0; i++)
-            {
-                if (email[i] >= 'a' && email[i] <= 'z')
-                {
-                    email[i] -= 32;
-                }
-            }
-
-    printf("%s\n", email);
-
-    unsigned rozm = 1024, o=0;
-    char *tekst=(char*)malloc(rozm);
-    if(tekst)
-    {
-        printf("Podaj tekst\n");
-        char *tekstuzytkownika;
-        scanf(" %s", tekst);
-        tekst[1023] = 0;
-        //tekst[o]=0;
-        printf("%s ",tekst);
-    }
-   
-    else{
-        printf("Brak pamieci, OUU NO");
+        printf("\nWiadomosc: %s\n", ptr);
+        free(ptr);
     }
 
     return 0;
 }
-
